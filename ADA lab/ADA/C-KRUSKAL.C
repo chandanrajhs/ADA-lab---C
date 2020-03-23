@@ -1,0 +1,81 @@
+#include<stdio.h>
+#include<conio.h>
+#include<process.h>
+
+int find(int v,int s[])
+{
+while(s[v]!=v)
+v=s[v];
+return v;
+}
+
+void kruskal(int n,int c[10][10])
+{
+int count,i,s[10],min,j,u,v,k,t[10][2],sum;
+for(i=0;i<n;i++)
+s[i]=i;
+count=0;
+sum=0;
+k=0;
+
+while(count<n-1)
+{
+min=999;
+for(i=0;i<n;i++)
+{
+for(j=0;j<n;j++)
+{
+if(c[i][j]!=0 && c[i][j]<min)
+{
+min=c[i][j];
+u=i;
+v=j;
+}
+}
+}
+
+if(min==999)break;
+i=find(u,s);
+j=find(u,s);
+if(u!=v)
+{
+t[k][0]=u;
+t[k][1]=v;
+k++;
+count++;
+sum+=min;
+s[v]=u;
+}
+c[u][v]=c[v][u]=999;
+}
+
+if(count==n-1)
+{
+printf("cost of spanning tree=%d\n",sum);
+printf("spanning tree is showen below\n");
+for(k=0;k<n-1;k++)
+{
+printf("%d,%d\n",t[k][0],t[k][1]);
+}
+exit(0);
+}
+printf("spanning tree doesnot exist\n");
+}
+
+void main()
+{
+int n,c[10][10],i,j;
+clrscr();
+printf("enter no.of nodes\n");
+scanf("%d",&n);
+printf("Enter the cost adjucency matrix\n");
+for(i=0;i<n;i++)
+{
+for(j=0;j<n;j++)
+{
+scanf("%d",&c[i][j]);
+}
+}
+kruskal(n,c);
+getch();
+}

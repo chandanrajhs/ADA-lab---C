@@ -1,0 +1,79 @@
+#include<stdio.h>
+#include<conio.h>
+#define MAX 25
+int x[MAX];
+void next_vertex(int G[MAX][MAX],int n,int k)
+{
+int j;
+while(1)
+{
+	x[k]=(x[k]+1)%(n+1);
+	if(x[k]==0)
+		return;
+	if(G[x[k-1]][x[k]]!=0)
+	{
+		for(j=1;j<=k;j++)
+		{
+			if(x[j]==x[k])
+			break;
+		}
+		if(j==k)
+		{
+			if((k<n) || ((k==n)&&(G[x[n]][x[1]]!=0)))
+			return;
+		}
+	}
+}
+}
+
+void H_cycle(int G[][MAX],int n,int k)
+{
+int i;
+while(1)
+{
+	next_vertex(G,n,k);
+	if(x[k]==0)
+		return;
+	if(k==n)
+	{
+		printf("\n");
+		for(i=1;i<=n;i++)
+			printf("%d",x[i]);
+		printf("%d",x[1]);
+	}
+	else
+		H_cycle(G,n,k+1);
+}
+}
+
+void main()
+{
+int i,j,v1,v2,edges,n,G[MAX][MAX];
+clrscr();
+printf("program for hamilton cycle:\n");
+printf("enter the number of vertices of graph:");
+scanf("%d",&n);
+for(i=1;i<=n;i++)
+{
+	for(j=1;j<=n;j++)
+	{
+		G[i][j]=0;
+		x[i]=0;
+	}
+}
+printf("enter the total number of edges:\n");
+scanf("%d",&edges);
+for(i=1;i<=edges;i++)
+{
+	printf("enter the edge:\n");
+	scanf("%d%d",&v1,&v2);
+	G[v1][v2]=1;
+	G[v2][v1]=1;
+}
+x[1]=1;
+printf("hamiltonian cycle....\n");
+H_cycle(G,n,2);
+getch();
+}
+
+
